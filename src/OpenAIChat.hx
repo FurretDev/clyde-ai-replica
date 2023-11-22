@@ -24,6 +24,7 @@ class OpenAIChat {
 	];
 
 	public static function chat(m:Message) {
+		trace("g");
 		sys.thread.Thread.create(() -> {
 			var content:String = m.content.replace("<@" + Main.Bot.user.id + ">", "");
 			if (!convos.exists(m.channel_id)) {
@@ -50,7 +51,7 @@ class OpenAIChat {
 			if (chatHistory.get('${m.channel_id}-${m.author.id}') == null) {
 				// trace("f");
 				var obj:Array<Dynamic> = [
-					{content: AIPrompts.generateInitialPrompt("", m), role: "system"},
+					{content: ClydeAIPrompt.generatePrompt(m), role: "system"},
 					{content: '${content}', role: "user"}
 				];
 				// trace(obj);

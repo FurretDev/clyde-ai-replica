@@ -16,4 +16,15 @@ class CoolUtil {
 
 		return ids;
 	}
+	public static function generateShit():String {
+		var randomBytes:String = "";
+        var abcd:Array<String> = "abcdefghijklmnopqrstuvwxyz".split("");
+        for (i in 0...2) {
+			randomBytes += abcd[Std.random(abcd.length)];
+		}
+		for (i in 0...2) {
+			randomBytes += Std.string(Std.random(5)).substring(0, 2);
+		}
+		return randomBytes;
+	}
 }
