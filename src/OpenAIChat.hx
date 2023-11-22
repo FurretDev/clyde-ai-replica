@@ -27,6 +27,7 @@ class OpenAIChat {
 		trace("g");
 		sys.thread.Thread.create(() -> {
 			var content:String = m.content.replace("<@" + Main.Bot.user.id + ">", "");
+			content = CoolUtil.sanitizeContent(content);
 			if (!convos.exists(m.channel_id)) {
 				var convo:Dynamic = {
 					users: [m.author.username]

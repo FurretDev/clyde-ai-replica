@@ -1,3 +1,5 @@
+using StringTools;
+
 class CoolUtil {
 	public static function extractIDsFromText(text:String):Array<String> {
 		var ids:Array<String> = [];
@@ -16,15 +18,35 @@ class CoolUtil {
 
 		return ids;
 	}
+
 	public static function generateShit():String {
 		var randomBytes:String = "";
-        var abcd:Array<String> = "abcdefghijklmnopqrstuvwxyz".split("");
-        for (i in 0...2) {
+		var abcd:Array<String> = "abcdefghijklmnopqrstuvwxyz".split("");
+		for (i in 0...2) {
 			randomBytes += abcd[Std.random(abcd.length)];
 		}
 		for (i in 0...2) {
 			randomBytes += Std.string(Std.random(5)).substring(0, 2);
 		}
 		return randomBytes;
+	}
+
+	public static function sanitizeContent(input:String):String {
+		//FINISHING TOMORROW
+		/**
+			Some text is removed from the initial prompt before the bot sees it. Namely (in order of `.replace` calls):
+			- Role mentions (always removed, replaced with nothing)
+			- User mentions (for users Clyde knows about, replaced with the text `@username`, otherwise replaced with nothing)
+			- ChatML tags (namely `<|im_start|>` and `<|im_end|>`)
+
+			The output is transformed back:
+			- replacing `@username` with a true user mention
+			- evaluating `@gif("search term")` by making requests to the Tenor API and replacing it with a link
+
+			The model is likely GPT 3.5 Turbo (effectively ChatGPT with a different training prompt).
+		**/
+		var regex:EReg = ~/<@&[^>]+>/g;
+		var output:String = regex.replace(input, "");
+		return output;
 	}
 }
