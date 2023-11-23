@@ -1,4 +1,9 @@
 using StringTools;
+import hxdiscord.types.User;
+import hxdiscord.types.structTypes.Channel;
+import hxdiscord.endpoints.Endpoints;
+import hxdiscord.types.Message;
+import haxe.Json;
 
 class CoolUtil {
 	public static function extractIDsFromText(text:String):Array<String> {
@@ -45,8 +50,22 @@ class CoolUtil {
 
 			The model is likely GPT 3.5 Turbo (effectively ChatGPT with a different training prompt).
 		**/
+
+		// I have no idea what are ChatML tags so fuck them
 		var regex:EReg = ~/<@&[^>]+>/g;
 		var output:String = regex.replace(input, "");
+		var ids:Array<String> = CoolUtil.extractIDsFromText(output);
+		for (id in ids) {
+			var user:User = Endpoints.getUser(id);
+			//make it check for discrims
+			var username:String = "";
+			if (user.discriminator != "0") {
+				username = user.username + "#" + user.discriminator;
+			} else {
+				username = user.username;
+			}
+			output = output.replace('<@${id}>','@${username}');
+		}
 		return output;
 	}
 }
