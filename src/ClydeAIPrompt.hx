@@ -15,6 +15,7 @@ class ClydeAIPrompt {
 			// trace(d);
 		}
 		getData.onError = (d:String) -> {
+            cannotFetch = true;
 			trace(d);
 		}
 		getData.request(false);
